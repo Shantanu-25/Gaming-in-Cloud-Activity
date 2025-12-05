@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHUG: CYBER VOID</title>
+    <meta name="description" content="Official SHUG exclusive endless flyer - Fly through the neon void!">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: 'Orbitron', 'Rajdhani', sans-serif;
+            image-rendering: pixelated;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background: linear-gradient(to bottom, #000814, #001233);
+            box-shadow: 0 0 60px #00ffff, 0 0 100px #ff00ff;
+        }
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #00ffff;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 0 15px #00ffff;
+            z-index: 10;
+        }
+        #start-screen, #game-over {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 20, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            z-index: 20;
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px #00ffff;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.4rem;
+            margin: 15px 0;
+            opacity: 0.9;
+        }
+        button {
+            margin-top: 30px;
+            padding: 16px 50px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00ffff, #00bfff);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,255,255,0.6);
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,255,255,0.8);
+        }
+        #high-score {
+            position: absolute;
+            top: 70px;
+            left: 20px;
+            color: #ff00ff;
+            font-size: 20px;
+            text-shadow: 0 0 15px #ff00ff;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <canvas id="game"></canvas>
+
+    <div id="ui">Score: <span id="score">0</span></div>
+    <div id="high-score">Best: <span id="best">0</span></div>
+
+    <div id="start-screen">
+        <h1>SHUG: CYBER VOID</h1>
+        <p>Fly through the neon void</p>
+        <p style="font-size:1.1rem; margin-top:20px; opacity:0.7;">Space / Click / Tap to boost</p>
+        <button onclick="startGame()">LAUNCH</button>
+    </div>
+
+    <div id="game-over" style="display:none;">
+        <h1>GAME OVER</h1>
+        <p>Final Score: <span id="final-score">0</span></p>
+        <p>High Score: <span id="final-best">0</span></p>
+        <button onclick="restartGame()">PLAY AGAIN</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('game');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 900;
+        canvas.height = 600;
+
+        // Game state
+        let player, obstacles, particles, score, speed, gameRunning, highScore;
+        const scoreEl = document.getElementById('score');
+        const bestEl = document.getElementById('best');
+        const finalScoreEl = document.getElementById('final-score');
+        const finalBestEl = document.getElementById('final-best');
+
+        // Load or initialize high score
+        highScore = localStorage.getItem('shugCyberVoidHS') || 0;
+        bestEl.textContent = highScore;
+
+        function init() {
+            player = {
+                x: 150,
+                y: canvas.height / 2,
+                radius: 22,
+                vy: 0,
+                trail: []
+            };
+            obstacles = [];
+            particles = [];
+            score = 0;
+            speed = 4;
+            gameRunning = false;
+
+            document.getElementById('start-screen').style.display = 'flex';
+            document.getElementById('game-over').style.display = 'none';
+        }
+
+        function startGame() {
+            document.getElementById('start-screen').style.display = 'none';
+            gameRunning = true;
+            score = 0;
+            speed = 4;
+            obstacles = [];
+            player.y = canvas.height / 2;
+            player.vy = 0;
+            player.trail = [];
+            loop();
+        }
+
+        function restartGame() {
+            document.getElementById('game-over').style.display = 'none';
+            startGame();
+        }
+
+        // Controls
+        document.addEventListener('keydown', e => { if (e.code === 'Space') boost(); });
+        document.addEventListener('click', boost);
+        document.addEventListener('touchstart', e => { e.preventDefault(); boost(); });
+
+        function boost() {
+            if (gameRunning) player.vy = -9;
+        }
+
+        class Obstacle {
+            constructor() {
+                this.gap = 180;
+                this.height = Math.random() * 200 + 100;
+                this.x = canvas.width;
+                this.width = 70;
+                this.passed = false;
+                this.color = Math.random() > 0.5 ? '#ff00ff' : '#00ffff';
+            }
+            update() {
+                this.x -= speed;
+                if (!this.passed && this.x + this.width < player.x) {
+                    this.passed = true;
+                    score += 10;
+                    if (score > highScore) {
+                        highScore = score;
+                        localStorage.setItem('shugCyberVoidHS', highScore);
+                        bestEl.textContent = highScore;
+                    }
+                }
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 30;
+
+                // Top obstacle
+                ctx.fillRect(this.x, 0, this.width, this.height);
+                // Bottom obstacle
+                ctx.fillRect(this.x, this.height + this.gap, this.width, canvas.height);
+
+                ctx.shadowBlur = 0;
+            }
+            collides() {
+                return player.x + player.radius > this.x &&
+                       player.x - player.radius < this.x + this.width &&
+                       (player.y - player.radius < this.height || player.y + player.radius > this.height + this.gap);
+            }
+        }
+
+        function createParticles(x, y) {
+            for (let i = 0; i < 8; i++) {
+                particles.push({
+                    x, y,
+                    vx: Math.random() * 6 - 3,
+                    vy: Math.random() * 6 - 3,
+                    life: 30,
+                    color: Math.random() > 0.5 ? '#00ffff' : '#ff00ff'
+                });
+            }
+        }
+
+        function loop() {
+            if (!gameRunning) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Background grid
+            ctx.strokeStyle = 'rgba(0, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < canvas.width; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i - speed * 2, canvas.height);
+                ctx.stroke();
+            }
+
+            // Player trail
+            player.trail.push({ x: player.x, y: player.y });
+            if (player.trail.length > 20) player.trail.shift();
+            player.trail.forEach((p, i) => {
+                ctx.fillStyle = `rgba(0, 255, 255, ${i / 20})`;
+                ctx.fillRect(p.x - 10, p.y - 5, 20, 10);
+            });
+
+            // Physics
+            player.vy += 0.4;
+            player.y += player.vy;
+            player.y = Math.max(player.radius, Math.min(canvas.height - player.radius, player.y));
+
+            // Generate obstacles
+            if (Math.random() < 0.015 + score / 10000) {
+                obstacles.push(new Obstacle());
+            }
+
+            // Update & draw obstacles
+            obstacles.forEach((obs, i) => {
+                obs.update();
+                obs.draw();
+                if (obs.collides() || player.y <= 0 || player.y >= canvas.height) {
+                    gameOver();
+                }
+                if (obs.x + obs.width < 0) obstacles.splice(i, 1);
+            });
+
+            // Particles
+            particles.forEach((p, i) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life--;
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life / 30;
+                ctx.fillRect(p.x, p.y, 6, 6);
+                if (p.life <= 0) particles.splice(i, 1);
+            });
+            ctx.globalAlpha = 1;
+
+            // Player
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#00ffff';
+            ctx.fill();
+            ctx.shadowColor = '#00ffff';
+            ctx.shadowBlur = 40;
+            ctx.strokeStyle = '#00ffff';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Score
+            scoreEl.textContent = score;
+            speed += 0.001;
+
+            requestAnimationFrame(loop);
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            createParticles(player.x, player.y);
+            finalScoreEl.textContent = score;
+            finalBestEl.textContent = highScore;
+            document.getElementById('game-over').style.display = 'flex';
+        }
+
+        // Start
+        init();
+    </script>
+</body>
+</html>
