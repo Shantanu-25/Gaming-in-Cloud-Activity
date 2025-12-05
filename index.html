@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHUG • The Future of Gaming</title>
+    <meta name="description" content="SHUG - Next-gen free gaming portal. Play, compete, earn, dominate.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --primary: #00ffff;
+            --secondary: #ff00ff;
+            --dark: #0d0d1f;
+            --darker: #050514;
+            --glow: 0 0 40px rgba(0, 255, 255, 0.8);
+            --glow2: 0 0 60px rgba(255, 0, 255, 0.6);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--darker);
+            color: #fff;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 90%, rgba(0,255,255,0.12) 0%, transparent 50%),
+                radial-gradient(circle at 90% 10%, rgba(255,0,255,0.12) 0%, transparent 50%);
+        }
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; }
+
+        /* Header & SHUG Logo */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.4s;
+        }
+        header.scrolled {
+            background: rgba(5,5,20,0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 5%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.2rem;
+            font-weight: 900;
+            letter-spacing: 10px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 
+                0 0 20px rgba(0,255,255,0.8),
+                0 0 40px rgba(255,0,255,0.6),
+                0 0 80px rgba(0,255,255,0.4);
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+        .logo::before {
+            content: 'SHUG';
+            position: absolute;
+            top: 0; left: 0;
+            background: linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 65%);
+            animation: glitch-1 5s infinite linear;
+        }
+        .logo::after {
+            content: 'SHUG';
+            position: absolute;
+            top: 0; left: 0;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            clip-path: polygon(0 60%, 100% 40%, 100% 100%, 0 100%);
+            animation: glitch-2 5s infinite linear;
+        }
+        @keyframes glitch-1 {
+            0%,100% { transform: translate(0); }
+            20% { transform: translate(-5px, 5px); }
+            40% { transform: translate(5px, -5px); }
+            60% { transform: translate(-5px, -3px); }
+            80% { transform: translate(5px, 3px); }
+        }
+        @keyframes glitch-2 {
+            0%,100% { transform: translate(0); }
+            20% { transform: translate(5px, -5px); }
+            40% { transform: translate(-5px, 5px); }
+            60% { transform: translate(5px, 3px); }
+            80% { transform: translate(-5px, -3px); }
+        }
+        .logo:hover { animation: pulse-glow 1.8s infinite; }
+        @keyframes pulse-glow {
+            0%,100% { text-shadow: 0 0 20px #0ff, 0 0 40px #f0f, 0 0 80px #0ff; }
+            50% { text-shadow: 0 0 40px #0ff, 0 0 80px #f0f, 0 0 120px #0ff; }
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1.8rem;
+            font-weight: 700;
+            font-size: 1.15rem;
+            position: relative;
+            transition: 0.4s;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 3px; background: var(--primary);
+            bottom: -10px; left: 50%; transform: translateX(-50%); transition: 0.4s; border-radius: 2px;
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--primary); text-shadow: var(--glow); }
+
+        .btn-3d {
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #00ffff, #00bfff);
+            border: none;
+            border-radius: 50px;
+            color: #000;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,255,255,0.5);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-3d::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.7s;
+        }
+        .btn-3d:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,255,255,0.7); }
+        .btn-3d:hover::before { left: 100%; }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ffff, #ff00ff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--glow), var(--glow2);
+            letter-spacing: 5px;
+            margin-bottom: 1rem;
+        }
+        .hero-content p {
+            font-size: 1.9rem;
+            opacity: 0.9;
+            max-width: 900px;
+            margin: 2rem auto 3.5rem;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-outline {
+            padding: 16px 45px;
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            background: transparent;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: 0.4s;
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: var(--glow);
+        }
+
+        .stats-bar {
+            position: absolute;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5rem;
+            background: rgba(10,10,35,0.8);
+            padding: 1.8rem 4rem;
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0,255,255,0.3);
+            z-index: 3;
+        }
+        .stat-item { text-align: center; }
+        .stat-num {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Games Section */
+        .section {
+            padding: 12rem 5%;
+            position: relative;
+            z-index: 2;
+        }
+        .section-title {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            margin-bottom: 6rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 3rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .game-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            height: 460px;
+            cursor: pointer;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            transition: all 0.5s ease;
+        }
+        .game-card:hover {
+            transform: translateY(-25px) scale(1.04);
+            box-shadow: var(--glow), var(--glow2);
+        }
+        .game-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.7s;
+        }
+        .game-card:hover img {
+            transform: scale(1.2);
+            filter: brightness(0.6);
+        }
+        .game-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2.5rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.95));
+            transform: translateY(80px);
+            transition: 0.5s;
+        }
+        .game-card:hover .game-info { transform: translateY(0); }
+        .live-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff0066;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255,0,102,0.8); }
+            70% { box-shadow: 0 0 0 15px rgba(255,0,102,0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,0,102,0); }
+        }
+
+        footer {
+            background: var(--dark);
+            padding: 6rem 5% 3rem;
+            text-align: center;
+            border-top: 1px solid rgba(0,255,255,0.2);
+            position: relative;
+            z-index: 2;
+        }
+        .socials a {
+            font-size: 2.8rem;
+            margin: 0 1.8rem;
+            color: #ccc;
+            transition: 0.4s;
+        }
+        .socials a:hover {
+            color: var(--primary);
+            transform: translateY(-12px);
+            text-shadow: var(--glow);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <header id="header">
+        <div class="logo">SHUG</div>
+        <div class="nav-links">
+            <a href="#">Games</a>
+            <a href="#">Tournaments</a>
+            <a href="#">Live</a>
+            <a href="#">Ranks</a>
+            <button class="btn-3d">PLAY NOW</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>SHUG</h1>
+            <p>10,000+ free games • Real-time tournaments • Earn rewards • Join millions of players worldwide</p>
+            <div class="hero-buttons">
+                <button class="btn-3d" style="font-size:1.4rem; padding:20px 60px;">PLAY FREE NOW</button>
+                <button class="btn-outline">Watch Live</button>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-num">6.8M+</div>
+                <div>Active Gamers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">$3.2M</div>
+                <div>Prizes This Month</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">99.9%</div>
+                <div>Uptime</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">LIVE & TRENDING</h2>
+        <div class="games-grid">
+            <div class="game-card">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=900&auto=format&fit=crop" alt="Neon Assault">
+                <div class="live-badge">LIVE • 168K</div>
+                <div class="game-info">
+                    <h3>NEON ASSAULT</h3>
+                    <p>Battle Royale • New Season</p>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=900&auto=format&fit=crop" alt="Void Warriors">
+                <div class="live-badge">LIVE • 104K</div>
+                <div class="game-info">
+                    <h3>VOID WARRIORS</h3>
+                    <p>MOBA • Ranked Play</p>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://images.unsplash.com/photo-1616588589676-62b3bd4ff10d?w=900&auto=format&fit=crop" alt="Drift Legends">
+                <div class="live-badge">LIVE • 89K</div>
+                <div class="game-info">
+                    <h3>DRIFT LEGENDS</h3>
+                    <p>Racing • Night City GP</p>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://images.unsplash.com/photo-1586182987387-6a5e3b0e905f?w=900&auto=format&fit=crop" alt="Galactic Dominion">
+                <div class="live-badge">LIVE • 127K</div>
+                <div class="game-info">
+                    <h3>GALACTIC DOMINION</h3>
+                    <p>4X Strategy • War Update</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 <strong>SHUG</strong> • Built for the ultimate gaming experience</p>
+        <div class="socials" style="margin: 3rem 0">
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-twitch"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+        </div>
+    </footer>
+
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 90 },
+                color: { value: ["#00ffff", "#ff00ff"] },
+                shape: { type: "circle" },
+                opacity: { value: 0.6, random: true },
+                size: { value: 4, random: true },
+                line_linked: { enable: true, distance: 160, color: "#00ffff", opacity: 0.3, width: 1 },
+                move: { enable: true, speed: 2 }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+
+        // Scroll header effect
+        window.addEventListener('scroll', () => {
+            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 100);
+        });
+
+        // GSAP Animations
+        gsap.from(".logo", { opacity: 0, y: -100, duration: 1.5, ease: "bounce.out" });
+        gsap.from(".hero-content h1", { y: 120, opacity: 0, duration: 1.6, delay: 0.5, ease: "power4.out" });
+        gsap.from(".hero-content p", { y: 80, opacity: 0, duration: 1.2, delay: 1 });
+        gsap.from(".hero-buttons button", { y: 60, opacity: 0, duration: 1, delay: 1.4, stagger: 0.2 });
+        gsap.from(".stats-bar", { y: 100, opacity: 0, duration: 1.4, delay: 1.8 });
+
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.utils.toArray(".game-card").forEach((card, i) => {
+            gsap.from(card, {
+                y: 250,
+                opacity: 0,
+                duration: 1.2,
+                delay: i * 0.15,
+                scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none reverse" }
+            });
+        });
+    </script>
+</body>
+</html>
