@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SHUG • The Future of Gaming</title>
-    <meta name="description" content="SHUG - Next-gen free gaming portal. Play, compete, earn, dominate.">
+    <meta name="description" content="SHUG - Official gaming portal featuring exclusive games like SHUG: CYBER VOID">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #00ffff;
@@ -30,7 +28,7 @@
         }
         #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; }
 
-        /* Header & SHUG Logo */
+        /* Header */
         header {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -40,10 +38,10 @@
             align-items: center;
             z-index: 1000;
             transition: all 0.4s;
+            backdrop-filter: blur(20px);
         }
         header.scrolled {
             background: rgba(5,5,20,0.95);
-            backdrop-filter: blur(20px);
             padding: 1rem 5%;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
@@ -55,94 +53,41 @@
             letter-spacing: 10px;
             background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
             -webkit-background-clip: text;
-            background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 
-                0 0 20px rgba(0,255,255,0.8),
-                0 0 40px rgba(255,0,255,0.6),
-                0 0 80px rgba(0,255,255,0.4);
+            text-shadow: 0 0 20px rgba(0,255,255,0.8), 0 0 40px rgba(255,0,255,0.6);
             position: relative;
-            cursor: pointer;
-            user-select: none;
         }
         .logo::before {
             content: 'SHUG';
             position: absolute;
             top: 0; left: 0;
-            background: linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff);
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             clip-path: polygon(0 0, 100% 0, 100% 45%, 0 65%);
-            animation: glitch-1 5s infinite linear;
+            animation: glitch 5s infinite;
         }
-        .logo::after {
-            content: 'SHUG';
-            position: absolute;
-            top: 0; left: 0;
-            background: linear-gradient(90deg, #00ffff, #ff00ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            clip-path: polygon(0 60%, 100% 40%, 100% 100%, 0 100%);
-            animation: glitch-2 5s infinite linear;
-        }
-        @keyframes glitch-1 {
+        @keyframes glitch {
             0%,100% { transform: translate(0); }
-            20% { transform: translate(-5px, 5px); }
-            40% { transform: translate(5px, -5px); }
-            60% { transform: translate(-5px, -3px); }
-            80% { transform: translate(5px, 3px); }
-        }
-        @keyframes glitch-2 {
-            0%,100% { transform: translate(0); }
-            20% { transform: translate(5px, -5px); }
-            40% { transform: translate(-5px, 5px); }
-            60% { transform: translate(5px, 3px); }
-            80% { transform: translate(-5px, -3px); }
-        }
-        .logo:hover { animation: pulse-glow 1.8s infinite; }
-        @keyframes pulse-glow {
-            0%,100% { text-shadow: 0 0 20px #0ff, 0 0 40px #f0f, 0 0 80px #0ff; }
-            50% { text-shadow: 0 0 40px #0ff, 0 0 80px #f0f, 0 0 120px #0ff; }
+            20% { transform: translate(-5px,5px); }
+            40% { transform: translate(5px,-5px); }
+            60% { transform: translate(-3px,-4px); }
         }
 
         .nav-links a {
             color: white;
             text-decoration: none;
-            margin: 0 1.8rem;
+            margin: 0 1.5rem;
             font-weight: 700;
             font-size: 1.15rem;
             position: relative;
-            transition: 0.4s;
         }
         .nav-links a::after {
             content: ''; position: absolute; width: 0; height: 3px; background: var(--primary);
-            bottom: -10px; left: 50%; transform: translateX(-50%); transition: 0.4s; border-radius: 2px;
+            bottom: -10px; left: 50%; transform: translateX(-50%); transition: 0.4s;
         }
         .nav-links a:hover::after { width: 100%; }
-        .nav-links a:hover { color: var(--primary); text-shadow: var(--glow); }
-
-        .btn-3d {
-            padding: 16px 40px;
-            background: linear-gradient(135deg, #00ffff, #00bfff);
-            border: none;
-            border-radius: 50px;
-            color: #000;
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,255,255,0.5);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-3d::before {
-            content: ''; position: absolute; top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: 0.7s;
-        }
-        .btn-3d:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,255,255,0.7); }
-        .btn-3d:hover::before { left: 100%; }
+        .nav-links a:hover { color: var(--primary); }
 
         /* Hero */
         .hero {
@@ -154,368 +99,152 @@
             position: relative;
             z-index: 2;
         }
-        .hero-content h1 {
+        .hero h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 8rem;
+            font-size: 8.5rem;
             font-weight: 900;
             background: linear-gradient(135deg, #00ffff, #ff00ff, #ffffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: var(--glow), var(--glow2);
-            letter-spacing: 5px;
-            margin-bottom: 1rem;
+            letter-spacing: 6px;
         }
-        .hero-content p {
-            font-size: 1.9rem;
+        .hero p {
+            font-size: 2rem;
+            margin: 2rem 0;
             opacity: 0.9;
-            max-width: 900px;
-            margin: 2rem auto 3.5rem;
         }
-        .hero-buttons {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .btn-outline {
-            padding: 16px 45px;
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            background: transparent;
-            color: var(--primary);
+
+        /* Buttons */
+        .btn-play {
+            padding: 22px 80px;
+            font-size: 1.8rem;
             font-weight: bold;
-            font-size: 1.1rem;
-            transition: 0.4s;
-        }
-        .btn-outline:hover {
-            background: var(--primary);
+            background: linear-gradient(135deg, #ff00ff, #ff0088);
             color: #000;
-            box-shadow: var(--glow);
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 15px 50px rgba(255,0,255,0.6);
+            transition: all 0.4s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-play:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 80px rgba(255,0,255,0.8);
         }
 
-        .stats-bar {
-            position: absolute;
-            bottom: 90px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 5rem;
-            background: rgba(10,10,35,0.8);
-            padding: 1.8rem 4rem;
-            border-radius: 25px;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0,255,255,0.3);
-            z-index: 3;
-        }
-        .stat-item { text-align: center; }
-        .stat-num {
-            font-size: 3rem;
-            font-weight: bold;
-            background: linear-gradient(var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Games Section */
-        .section {
-            padding: 12rem 5% 8rem;
-            position: relative;
-            z-index: 2;
-        }
-        .section-title {
+        /* Featured Game Section */
+        .featured {
+            padding: 10rem 5%;
             text-align: center;
+            background: linear-gradient(135deg, rgba(0,255,255,0.08), rgba(255,0,255,0.08));
+        }
+        .featured h2 {
             font-family: 'Orbitron', sans-serif;
             font-size: 4.5rem;
-            margin-bottom: 6rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 3rem;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-        .game-card {
-            position: relative;
-            border-radius: 24px;
-            overflow: hidden;
-            height: 460px;
-            cursor: pointer;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            transition: all 0.5s ease;
-        }
-        .game-card:hover {
-            transform: translateY(-25px) scale(1.04);
-            box-shadow: var(--glow), var(--glow2);
-        }
-        .game-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.7s;
-        }
-        .game-card:hover img {
-            transform: scale(1.2);
-            filter: brightness(0.6);
-        }
-        .game-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 2.5rem;
-            background: linear-gradient(transparent, rgba(0,0,0,0.95));
-            transform: translateY(80px);
-            transition: 0.5s;
-        }
-        .game-card:hover .game-info { transform: translateY(0); }
-        .live-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #ff0066;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: bold;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255,0,102,0.8); }
-            70% { box-shadow: 0 0 0 15px rgba(255,0,102,0); }
-            100% { box-shadow: 0 0 0 0 rgba(255,0,102,0); }
-        }
-
-        /* New Featured Game Section */
-        .featured-game {
-            padding: 8rem 5%;
-            background: rgba(0,255,255,0.05);
-            text-align: center;
-            border-top: 1px solid rgba(0,255,255,0.1);
-            border-bottom: 1px solid rgba(0,255,255,0.1);
-        }
-        .featured-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
             margin-bottom: 2rem;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .game-embed {
-            max-width: 1200px;
-            margin: 0 auto 2rem;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--glow);
-            background: var(--dark);
-        }
-        .game-embed iframe {
-            width: 100%;
-            height: 600px;
-            border: none;
-            display: block;
-        }
-        .launch-btn {
-            padding: 18px 50px;
-            background: linear-gradient(135deg, var(--secondary), #ff0080);
-            border: none;
-            border-radius: 50px;
-            color: #000;
-            font-weight: bold;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: 0 15px 35px rgba(255,0,255,0.4);
-            transition: all 0.4s;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .launch-btn:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(255,0,255,0.6);
-        }
 
         footer {
             background: var(--dark);
-            padding: 6rem 5% 3rem;
+            padding: 5rem 5% 3rem;
             text-align: center;
-            border-top: 1px solid rgba(0,255,255,0.2);
-            position: relative;
-            z-index: 2;
+            font-size: 1.1rem;
         }
         .socials a {
-            font-size: 2.8rem;
-            margin: 0 1.8rem;
+            font-size: 2.5rem;
+            margin: 0 1.5rem;
             color: #ccc;
             transition: 0.4s;
         }
-        .socials a:hover {
-            color: var(--primary);
-            transform: translateY(-12px);
-            text-shadow: var(--glow);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero-content h1 { font-size: 5rem; }
-            .stats-bar { gap: 2rem; padding: 1rem 2rem; }
-            .game-embed iframe { height: 400px; }
-        }
+        .socials a:hover { color: var(--primary); transform: translateY(-10px); }
     </style>
 </head>
 <body>
 
     <div id="particles-js"></div>
 
+    <!-- Header -->
     <header id="header">
         <div class="logo">SHUG</div>
         <div class="nav-links">
+            <a href="#">Home</a>
             <a href="#">Games</a>
             <a href="#">Tournaments</a>
-            <a href="#">Live</a>
-            <a href="#">Ranks</a>
-            <button class="btn-3d">PLAY NOW</button>
+            <a href="game.html" target="_blank">Play Now</a>
         </div>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
+        <div>
             <h1>SHUG</h1>
-            <p>10,000+ free games • Real-time tournaments • Earn rewards • Join millions of players worldwide</p>
-            <div class="hero-buttons">
-                <button class="btn-3d" style="font-size:1.4rem; padding:20px 60px;">PLAY FREE NOW</button>
-                <button class="btn-outline">Watch Live</button>
-            </div>
-        </div>
-
-        <div class="stats-bar">
-            <div class="stat-item">
-                <div class="stat-num">6.8M+</div>
-                <div>Active Gamers</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num">$3.2M</div>
-                <div>Prizes This Month</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num">99.9%</div>
-                <div>Uptime</div>
-            </div>
+            <p>The ultimate gaming experience begins here</p>
+            
+            <!-- MAIN PLAY BUTTON - OPENS YOUR game.html -->
+            <a href="game.html" target="_blank" class="btn-play">
+                PLAY SHUG: CYBER VOID
+            </a>
         </div>
     </section>
 
-    <section class="section">
-        <h2 class="section-title">LIVE & TRENDING</h2>
-        <div class="games-grid">
-            <div class="game-card">
-                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=900&auto=format&fit=crop" alt="Neon Assault">
-                <div class="live-badge">LIVE • 168K</div>
-                <div class="game-info">
-                    <h3>NEON ASSAULT</h3>
-                    <p>Battle Royale • New Season</p>
-                </div>
-            </div>
-            <div class="game-card">
-                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=900&auto=format&fit=crop" alt="Void Warriors">
-                <div class="live-badge">LIVE • 104K</div>
-                <div class="game-info">
-                    <h3>VOID WARRIORS</h3>
-                    <p>MOBA • Ranked Play</p>
-                </div>
-            </div>
-            <div class="game-card">
-                <img src="https://images.unsplash.com/photo-1616588589676-62b3bd4ff10d?w=900&auto=format&fit=crop" alt="Drift Legends">
-                <div class="live-badge">LIVE • 89K</div>
-                <div class="game-info">
-                    <h3>DRIFT LEGENDS</h3>
-                    <p>Racing • Night City GP</p>
-                </div>
-            </div>
-            <div class="game-card">
-                <img src="https://images.unsplash.com/photo-1586182987387-6a5e3b0e905f?w=900&auto=format&fit=crop" alt="Galactic Dominion">
-                <div class="live-badge">LIVE • 127K</div>
-                <div class="game-info">
-                    <h3>GALACTIC DOMINION</h3>
-                    <p>4X Strategy • War Update</p>
-                </div>
-            </div>
-        </div>
+    <!-- Featured Exclusive Game -->
+    <section class="featured">
+        <h2>EXCLUSIVE GAME</h2>
+        <h3 style="font-size:2.2rem; margin:1.5rem 0; opacity:0.9;">SHUG: CYBER VOID</h3>
+        <p style="font-size:1.4rem; max-width:800px; margin:0 auto 3rem;">
+            Fly through the neon void. Dodge obstacles. Break your high score.<br>
+            Only available on SHUG.
+        </p>
+        
+        <!-- SECONDARY PLAY BUTTON -->
+        <a href="game.html" target="_blank" class="btn-play">
+            LAUNCH GAME NOW
+        </a>
     </section>
 
-    <!-- New Featured Game: Neon Dodge -->
-    <section class="featured-game">
-        <h2 class="featured-title">Featured: Neon Dodge</h2>
-        <p style="font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.9;">Dodge through cyber tunnels—built on SHUG's cloud-powered engine!</p>
-        <div class="game-embed">
-            <!-- Embedded iframe from GitHub Pages cloud host -->
-            <iframe src="https://sillycodegames.github.io/neon-dodge/" title="Neon Dodge Game"></iframe>
-        </div>
-        <a href="https://sillycodegames.github.io/neon-dodge/" class="launch-btn" target="_blank">Launch Full Game</a>
-    </section>
-
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2025 <strong>SHUG</strong> • Built for the ultimate gaming experience</p>
-        <div class="socials" style="margin: 3rem 0">
+        <p>&copy; 2025 <strong>SHUG</strong> • Made with <span style="color:#ff00ff">♥</span> for gamers</p>
+        <div class="socials" style="margin: 2rem 0">
             <a href="#"><i class="fab fa-discord"></i></a>
             <a href="#"><i class="fab fa-twitch"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
             <a href="#"><i class="fab fa-youtube"></i></a>
-            <a href="#"><i class="fab fa-tiktok"></i></a>
         </div>
     </footer>
 
-    <!-- Particles.js -->
+    <!-- Particles.js Background -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         particlesJS("particles-js", {
-            particles: {
-                number: { value: 90 },
-                color: { value: ["#00ffff", "#ff00ff"] },
-                shape: { type: "circle" },
-                opacity: { value: 0.6, random: true },
-                size: { value: 4, random: true },
-                line_linked: { enable: true, distance: 160, color: "#00ffff", opacity: 0.3, width: 1 },
-                move: { enable: true, speed: 2 }
+            "particles": {
+                "number": { "value": 100 },
+                "color": { "value": ["#00ffff", "#ff00ff"] },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.6, "random": true },
+                "size": { "value": 4, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#00ffff", "opacity": 0.3, "width": 1 },
+                "move": { "enable": true, "speed": 3 }
             },
-            interactivity: {
-                detect_on: "canvas",
-                events: {
-                    onhover: { enable: true, mode: "repulse" },
-                    onclick: { enable: true, mode: "push" },
-                    resize: true
+            "interactivity": {
+                "events": {
+                    "onhover": { "enable": true, "mode": "repulse" },
+                    "onclick": { "enable": true, "mode": "push" }
                 }
             },
-            retina_detect: true
+            "retina_detect": true
         });
 
-        // Scroll header effect
+        // Header scroll effect
         window.addEventListener('scroll', () => {
             document.getElementById('header').classList.toggle('scrolled', window.scrollY > 100);
         });
-
-        // GSAP Animations
-        gsap.from(".logo", { opacity: 0, y: -100, duration: 1.5, ease: "bounce.out" });
-        gsap.from(".hero-content h1", { y: 120, opacity: 0, duration: 1.6, delay: 0.5, ease: "power4.out" });
-        gsap.from(".hero-content p", { y: 80, opacity: 0, duration: 1.2, delay: 1 });
-        gsap.from(".hero-buttons button", { y: 60, opacity: 0, duration: 1, delay: 1.4, stagger: 0.2 });
-        gsap.from(".stats-bar", { y: 100, opacity: 0, duration: 1.4, delay: 1.8 });
-
-        gsap.registerPlugin(ScrollTrigger);
-        gsap.utils.toArray(".game-card").forEach((card, i) => {
-            gsap.from(card, {
-                y: 250,
-                opacity: 0,
-                duration: 1.2,
-                delay: i * 0.15,
-                scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none reverse" }
-            });
-        });
-
-        // Animate featured section
-        gsap.from(".featured-title", { y: 80, opacity: 0, duration: 1.2, scrollTrigger: { trigger: ".featured-game", start: "top 80%" } });
-        gsap.from(".game-embed", { scale: 0.9, opacity: 0, duration: 1.5, delay: 0.3, scrollTrigger: { trigger: ".featured-game", start: "top 80%" } });
     </script>
 </body>
 </html>
